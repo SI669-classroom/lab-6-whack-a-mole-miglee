@@ -15,21 +15,28 @@ export class HomePage {
   gameTimer: any;
   timeLeft: number = 0;
   timerObserver: any;
-  score: 0;
+  score: number;
 
+  scoreObserver : any;
+  scoreUpdate : any;
 
   constructor(public navCtrl: NavController) {
 
     /**
      * Create an observer to be passed to the new MoleHoles
      */
-
+    this.scoreUpdate = Observable.create(observer => {
+      this.scoreObserver = observer;
+    });
     /**
      * Subscribe to the observer created above to update the score
      */
+    this.scoreUpdate.subscribe((hit) => {
+      this.score = this.score+1;
+    });
 
     for(let i = 0; i<9; i++) {
-      this.moleHoles.push(new MoleHole(i, /*Pass the observer created to the new MoleHoles*/))
+      this.moleHoles.push(new MoleHole(i, this.scoreObserver))
     }
 
     let timerUpdate = Observable.create(observer => {
@@ -79,7 +86,8 @@ export class HomePage {
     //use ionic 4; use Angular routing across the project.
     this.navCtrl.push('LeaderboardPage', {
       score: this.score
-    })
+    });
+    console.log("push score:",this.score);
   }
 
   resetGame() {
@@ -94,16 +102,24 @@ export class HomePage {
       setTimeout(() => {
         this.showHitMessage = false;
       }, 300);
+      console.log("hit! score:",this.score);
     }
   }
 
   stateToClass(state: number) {
     switch(state) {
-      /**
-       * What should this function do?
-       * Hint: Look in the home.scss file
-       */
+    case 0:
+        return "hid";
+        // break;
+    case 1:
+        return "out";
+        // break;
+    case 2:
+        return "hit";
+        // break;
+
     }
+
 }
 
 }

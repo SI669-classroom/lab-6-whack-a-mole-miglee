@@ -1,4 +1,5 @@
 import { NativeAudio } from '@ionic-native/native-audio';
+import { Observable } from 'rxjs/Observable';
 
 export class MoleHole {
     //moleState
@@ -10,13 +11,16 @@ export class MoleHole {
     holeNumber: Number
     nativeAudio: NativeAudio = new NativeAudio();
 
+
     constructor(public num: Number, public observer: any) {
         this.moleState = 0;
         this.holeNumber = num;
 
         this.nativeAudio.preloadSimple('squish', '../assets/squish.mp3');
         //.then(onSuccess, onError);
+
     }
+    
 
     showMole(duration) {
         // If the mole is already out, 
